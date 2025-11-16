@@ -40,3 +40,7 @@
 ##### Delete all unused volumes
 
 -     docker volume prune
+
+##### Execute a shell in a running container
+
+-     docker exec -it <container_id> sh
