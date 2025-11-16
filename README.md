@@ -1,0 +1,2 @@
+- This repo is "HOW TO" on integrating postresdb , expressjs, node, react and typescript.
+- Refer to the md files in each folder to understand how thing work.
