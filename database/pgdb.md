@@ -34,3 +34,10 @@
 #### Execurting psql directly from the Host machine directly .
 
 -     docker exec -it <container_name> psql -U <pg_user> <pg_db>
+
+#### What happens when i make changes to the init.sql ?
+
+- Since the .sql files in the docker-entrypoint-initdb/ are executed once , we don't wanna do that if the init.sql is gonna keep changing.
+- A couple of way are there to solve this :
+- > 1. copy the init.sql to tmp/ and executing it via the interactive psql
+- > 2. use volumes and sync the init.sql from the host machine and the container
