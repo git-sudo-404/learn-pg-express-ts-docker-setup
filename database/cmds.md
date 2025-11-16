@@ -1,10 +1,10 @@
-#### How to run this init.sql using docker commands ?
+### How to run this init.sql using docker commands ?
 
-###### Build the image
+##### Build the image
 
 -     docker build -t <image_name> .
 
-###### Running the container
+##### Running the container
 
 -      docker run --name <container_name>
                   -e POSTGRES_USER=<username>
