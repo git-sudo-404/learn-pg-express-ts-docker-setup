@@ -41,3 +41,21 @@
 - A couple of way are there to solve this :
 - > 1. copy the init.sql to tmp/ and executing it via the interactive psql
 - > 2. use volumes and sync the init.sql from the host machine and the container
+
+#### 1) Copying init.sql manually and running using \i in psql
+
+- This method works but it is != deleting and reconstructing the db
+- So, if there are some tables already created they will be there , and if your init.sql tries to create an existing table again then it'll throw error pretty much like any other normal dbms server running on your machine .
+- _Then WHY this method?_
+- If you get any errors while creating the database from init.sql and needs a quick fix just do the below steps :
+- COPY the init.sql to the tmp folder (can use any folder , but tmp has no permission issues so just copy it there )
+-                 docker cp ./init.sql pgcont:/tmp/init.sql
+- Activate the psql interactive terminal
+-                 docker exec -it pgcont psql -U <user_name> <database_name>
+- Then load the init.sql using \i - "include" / "import"
+-                 \i /tmp/init.sql
+- enter \q to exit the interactive psql
+
+* NOTE: This method does not rebuild or rerun the container.
+
+#### 2) Using volumes
