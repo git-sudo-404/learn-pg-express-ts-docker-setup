@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:alpine
+    container_name: pgcont
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=pguser
+      - POSTGRES_DB=pgdb
+      - POSTGRES_PASSWORD=pgpassword
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg-data-vol:/var/lib/postgresql/data
+
+volumes:
+  pg-data-vol: {}

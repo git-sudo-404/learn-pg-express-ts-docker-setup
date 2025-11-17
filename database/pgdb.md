@@ -114,3 +114,57 @@
 * here _- pg_data_sql:/var/lib/postgresql/data_ acts a volume ;
 
 * anyting that starts woth _/_ or _./_ acts as bind mount and when it starts with some name like _data_sql_ it is a volume
+
+- And the rest is just make some changes and execute the commandes as usual :
+-       docker compose down -v
+-       docker compose up -d
+- _-v_ deletes the volume also
+
+### Auto - deletion and restarting of container
+
+- The trick is to use nodemon to watch the init.sql and run the above mentioned docker-compose whenever it detects a change
+
+* docker-compose.db.yaml
+
+*       version:'3.8'
+        services:
+          db:
+            image: postgres:latest
+            restart: unless-stopped # This ensures the container restarts if it crashes
+            environment:
+              POSTGRES_USER: pguser
+              POSTGRES_DB: pgdb
+              POSTGRES_PASSWORD: pgpassword
+            ports:
+              - "5432:5432""
+            volumes:
+              # 1. BIND MOUNT:
+              #    This maps your local init.sql file to the init directory
+              #    inside the container. It's how the container finds your script.
+              #    Make sure your 'init.sql' is in the same folder as this file.
+              - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+              # 2. NAMED VOLUME:
+              #    This creates a Docker-managed volume named 'db-data'
+              #    to permanently store your database files.
+              - db-data:/var/lib/postgresql/data
+        volumes:
+          db-data:
+            # This just means "create a default volume", no special driver needed.
+            driver: local
+
+-     npm install -g nodemon
+
+- create a nodemon.json
+
+*       {
+          "watch":["init.sql"]
+          "exec":"docker compose -f docker-compose.db.yaml down -v && docker compose up -d"
+        }
+
+- run
+-     nodemon
+
+* And don't forget to use
+*       docker compose -f docker-compose.db.yaml down --rmi all
+* when you quit nodemon by pressing _ctrl+c_.

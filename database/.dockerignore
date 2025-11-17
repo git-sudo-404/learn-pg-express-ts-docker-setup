@@ -1,0 +1,5 @@
+.dockerignore
+.git 
+**/*.json
+**/node_modules/
+**/*.md

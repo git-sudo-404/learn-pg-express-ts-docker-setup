@@ -18,4 +18,5 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT INTO users VALUES 
 (1,'red-coder',20,'git-street'),
 (2,'green-coder',3,'git-HQ'),
-(3,'grey-code',4,'git-house');
+(3,'grey-code',4,'git-house'),
+(4,'blue-coder',5,'git-mansion');
