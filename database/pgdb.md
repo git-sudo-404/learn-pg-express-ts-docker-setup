@@ -1,5 +1,7 @@
 ## How to run this init.sql using docker commands ?
 
+##### (Official Doc link)[https://docs.docker.com/guides/pre-seeding/]
+
 #### Build the image
 
 -     docker build -t <image_name> .
@@ -59,3 +61,56 @@
 * NOTE: This method does not rebuild or rerun the container.
 
 #### 2) Using volumes
+
+-     docker run --name <container_name>
+                  -p 5432:5432
+                  -e POSTGRES_DB=<database_name>
+                  -e POSTGRES_USER=<username>
+                  -e POSTGRES_PASSWORD=<password>
+                  -v "<volume_name>:/var/lib/postgresql/data"
+                  <image_name>
+- _/var/lib/postgresql/data_ -- this is where the postgresql by default looks into , the tables and the user data anol are stored here .
+
+#### How to work with development :
+
+- There are 2 - stages with regards to database
+- i) development of the init.sql to create tables and seed the data
+- ii) development of the backend once the init.sql is created and seeded succwssfully.
+
+##### _i) For the development of the init.sql_
+
+- use the docker-compose.db.yaml
+
+##### ii) _For the development of the rest of the app once the db is setup_
+
+- use teh docker-compose.dev.yaml
+
+### Using docker-compose.db.yaml
+
+##### _volumes vs bind mounts in docker-compose:_
+
+- in docker compose the volumes refer to the generics , and not the "volume"
+- when you specify
+-       services:
+          db:
+            image: postgres
+
+            volumes:
+              - ./init.sql:/docker-entrypoint-initdb.d/
+
+- here _./init.sql:/docker-entrypoint-initdb.d/_ acts as a bind mount
+
+* when you specify
+*       services:
+          db:
+            images: postgres
+
+          volumes:
+            - pg_data_sql:/var/lib/postgresql/data
+
+        volumes:
+          pg_data_sql:
+
+* here _- pg_data_sql:/var/lib/postgresql/data_ acts a volume ;
+
+* anyting that starts woth _/_ or _./_ acts as bind mount and when it starts with some name like _data_sql_ it is a volume
