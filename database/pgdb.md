@@ -1,6 +1,6 @@
 ## How to run this init.sql using docker commands ?
 
-##### (Official Doc link)[https://docs.docker.com/guides/pre-seeding/]
+##### [Official Doc link](https://docs.docker.com/guides/pre-seeding/)
 
 #### Build the image
 
